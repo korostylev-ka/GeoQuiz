@@ -3,6 +3,7 @@ package ru.korostylev.android.geoquiz
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
@@ -11,7 +12,10 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 
+
 private const val TAG = "MainActivity"
+//добавляем ключ для пары ключ-значение при onSaveInstanceState
+private const val KEY_INDEX = "index"
 
 
 class MainActivity : AppCompatActivity() {
@@ -35,6 +39,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate(Bundle?) called")
         setContentView(R.layout.activity_main)
+        //присваиваем переменной значение текущего номера вопросов, если activity была перезапущена
+        val currentIndex = savedInstanceState?.getInt(KEY_INDEX) ?: 0
+        //во viewmodel присваеваем значение текущего индекса
+        quizViewModel.currentIndex= currentIndex
         //присваиваем имена кнопкам и полю текста
         trueButton = findViewById(R.id.true_button)
         falseButton = findViewById(R.id.false_button)
@@ -134,5 +142,12 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "onDestroy called")
+    }
+    //по умолчаниюфункция сохраняет все представления и состояния активити в объекте bundle
+    override fun onSaveInstanceState(savedInstanceState: Bundle) {
+        super.onSaveInstanceState(savedInstanceState)
+        Log.i(TAG, "onSaveInstanceState")
+        //кладеи в bundle значение текущего индекса вопросов
+        savedInstanceState.putInt(KEY_INDEX, quizViewModel.currentIndex)
     }
 }

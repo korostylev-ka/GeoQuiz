@@ -21,7 +21,7 @@ class QuizViewModel: ViewModel() {
     }
 
     //текущий вопрос
-    private var currentIndex = 0
+    var currentIndex = 0
     //количество верных ответов
     private var correctAnswers = 0
     //список вопросов
