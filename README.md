@@ -1,0 +1,2 @@
+# GeoQuiz
+Сохранили состояние программы(текущий индекс вопросы) через SavedInstanceState 846a8407012f157dc1c3ddffd568b3af60c6da18
