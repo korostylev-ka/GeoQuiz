@@ -1,6 +1,7 @@
 package ru.korostylev.android.geoquiz
 
 import android.content.Context
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -22,6 +23,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var nextButton: ImageButton
     private lateinit var prevButton: ImageButton
     private lateinit var questionTextView: TextView
+    private lateinit var cheatButton: Button
     //создаем ViewModel
     private val quizViewModel: QuizViewModel by viewModels()
     //"старый" вариант
@@ -48,6 +50,7 @@ class MainActivity : AppCompatActivity() {
         nextButton = findViewById(R.id.next_button)
         prevButton = findViewById(R.id.prev_button)
         questionTextView = findViewById(R.id.question_text_view)
+        cheatButton = findViewById(R.id.cheat_button)
         //обработка нажатия на кнопку True
         trueButton.setOnClickListener {
             quizViewModel.checkAnswer(true)
@@ -111,6 +114,12 @@ class MainActivity : AppCompatActivity() {
                 falseButton.isClickable = true
             }
             updateQuestion()
+        }
+        //обработка нажатия кнопки чит
+        cheatButton.setOnClickListener {
+            //интент для запуска активити с читом
+            val intent = Intent(this, CheatActivity::class.java)
+            startActivity(intent)
         }
 
         updateQuestion()
