@@ -3,15 +3,12 @@ package ru.korostylev.android.geoquiz
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
-
+import androidx.activity.viewModels
 
 private const val TAG = "MainActivity"
 //добавляем ключ для пары ключ-значение при onSaveInstanceState
@@ -26,9 +23,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var prevButton: ImageButton
     private lateinit var questionTextView: TextView
     //создаем ViewModel
-    private val quizViewModel: QuizViewModel by lazy {
+    private val quizViewModel: QuizViewModel by viewModels()
+    //"старый" вариант
+    /*private val quizViewModel: QuizViewModel by lazy {
         ViewModelProviders.of(this).get(QuizViewModel::class.java)
-    }
+    }*/
 
     private fun updateQuestion() {
         val questionTextResId  = quizViewModel.currentQuestionText
