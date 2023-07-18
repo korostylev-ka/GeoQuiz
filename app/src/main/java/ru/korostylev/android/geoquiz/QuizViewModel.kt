@@ -9,6 +9,7 @@ import java.security.AccessController.getContext
 private const val TAG = "QuizViewModel"
 
 class QuizViewModel: ViewModel() {
+    val repository: GeoRepository = GeoRepositoryImpl()
 
     init {
         Log.d(TAG, "ViewModel instance created")
@@ -27,11 +28,7 @@ class QuizViewModel: ViewModel() {
     //количество верных ответов
     private var correctAnswers = 0
     //список вопросов
-    private val questionBank = listOf(
-        Question(R.string.question_australia, true, false),
-        Question(R.string.question_oceans, true, false),
-        Question(R.string.question_africa, false, false)
-    )
+    private val questionBank = repository.listOfQuestions
     //правильный ответ на текущий вопрос
     val currentQuestionAnswer: Boolean
         get() = questionBank[currentIndex].answer
