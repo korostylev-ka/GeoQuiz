@@ -24,14 +24,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    val cheatActivityLauncher = registerForActivityResult(CheatActivity.CheatActivityContract) {result->
-        println(result)
-        if (result == true) {
-            Toast.makeText(this, "ЧИТЕР!!!", Toast.LENGTH_LONG)
-                .show()
-        }
 
-    }
 
     @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {

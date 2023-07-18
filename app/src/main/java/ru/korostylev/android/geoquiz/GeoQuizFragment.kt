@@ -32,6 +32,15 @@ class GeoQuizFragment : Fragment() {
     /*private val quizViewModel: QuizViewModel by lazy {
         ViewModelProviders.of(this).get(QuizViewModel::class.java)
     }*/
+    val cheatActivityLauncher = registerForActivityResult(CheatActivity.CheatActivityContract) {result->
+        println(result)
+        if (result == true) {
+            Toast.makeText(requireContext(), "ЧИТЕР!!!", Toast.LENGTH_LONG)
+                .show()
+        }
+
+    }
+
     private fun updateQuestion() {
         val questionTextResId  = quizViewModel.currentQuestionText
         questionTextView.setText(questionTextResId)    }
@@ -131,7 +140,7 @@ class GeoQuizFragment : Fragment() {
             //запуск активити чита с передачей информации от дочерней активити @Deprecated!!!
             //2 параметр - код запроса - целое число, для определения, кто из потомков передает данные
             //startActivityForResult(intent, REQUEST_CODE_CHEAT)
-            //cheatActivityLauncher.launch(answerIsTrue)
+            cheatActivityLauncher.launch(answerIsTrue)
             Toast.makeText(requireContext(), "YOU ARE CHEATER", Toast.LENGTH_LONG)
         }
 
