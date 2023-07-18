@@ -22,6 +22,8 @@ class QuizViewModel: ViewModel() {
 
     //текущий вопрос
     var currentIndex = 0
+    //использовал ли игрок кнопку чит
+    var isCheater = false
     //количество верных ответов
     private var correctAnswers = 0
     //список вопросов

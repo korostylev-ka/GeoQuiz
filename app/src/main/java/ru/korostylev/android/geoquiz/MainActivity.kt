@@ -1,5 +1,7 @@
 package ru.korostylev.android.geoquiz
 
+import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,11 +11,16 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContract
 import androidx.activity.viewModels
+import androidx.annotation.ColorRes
+import androidx.annotation.StringRes
 
 private const val TAG = "MainActivity"
 //добавляем ключ для пары ключ-значение при onSaveInstanceState
 private const val KEY_INDEX = "index"
+//код запроса, для определения, какой из потомков активити возвращает данные
+private const val REQUEST_CODE_CHEAT = 0
 
 
 class MainActivity : AppCompatActivity() {
@@ -36,6 +43,16 @@ class MainActivity : AppCompatActivity() {
         questionTextView.setText(questionTextResId)
     }
 
+    val cheatActivityLauncher = registerForActivityResult(CheatActivity.CheatActivityContract) {result->
+        println(result)
+        if (result == true) {
+            Toast.makeText(this, "ЧИТЕР!!!", Toast.LENGTH_LONG)
+                .show()
+        }
+
+    }
+
+    @SuppressLint("ResourceAsColor")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate(Bundle?) called")
@@ -56,9 +73,11 @@ class MainActivity : AppCompatActivity() {
             quizViewModel.checkAnswer(true)
             val trueAnswer = quizViewModel.currentQuestionAnswer
             if (trueAnswer == true) {
+                trueButton.setBackgroundColor(R.color.correct)
                 Toast.makeText(this, R.string.correct_toast, Toast.LENGTH_SHORT)
                     .show()
             } else {
+                trueButton.setBackgroundColor(R.color.correct)
                 Toast.makeText(this, R.string.incorrect_toast, Toast.LENGTH_SHORT)
                     .show()
             }
@@ -69,6 +88,7 @@ class MainActivity : AppCompatActivity() {
             }
             trueButton.isClickable = false
             falseButton.isClickable = false
+
 
         }
         //Обработка нажатия на кнопку False
@@ -117,13 +137,21 @@ class MainActivity : AppCompatActivity() {
         }
         //обработка нажатия кнопки чит
         cheatButton.setOnClickListener {
-            //интент для запуска активити с читом
-            val intent = Intent(this, CheatActivity::class.java)
-            startActivity(intent)
+            /*//интент для запуска активити с читом(старый вариант)
+            val intent = Intent(this, CheatActivity::class.java)*/
+            val answerIsTrue = quizViewModel.currentQuestionAnswer
+            //создаем интент и кладем значение правильности текущего ответа
+            //val intent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
+            //запуск активити чита по интенту
+            //startActivity(intent)
+            //запуск активити чита с передачей информации от дочерней активити @Deprecated!!!
+            //2 параметр - код запроса - целое число, для определения, кто из потомков передает данные
+           //startActivityForResult(intent, REQUEST_CODE_CHEAT)
+            cheatActivityLauncher.launch(answerIsTrue)
+            Toast.makeText(this@MainActivity, "YOU ARE CHEATER", Toast.LENGTH_LONG)
         }
 
         updateQuestion()
-
 
     }
 
@@ -157,5 +185,15 @@ class MainActivity : AppCompatActivity() {
         Log.i(TAG, "onSaveInstanceState")
         //кладеи в bundle значение текущего индекса вопросов
         savedInstanceState.putInt(KEY_INDEX, quizViewModel.currentIndex)
+    }
+    //переопределяем для получения кода было ли читерство из CheatActivity
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode != Activity.RESULT_OK) {
+            return
+        }
+        if (requestCode == REQUEST_CODE_CHEAT) {
+            quizViewModel.isCheater = data?.getBooleanExtra(EXTRA_ANSWER_SHOWN, false) ?: false
+        }
     }
 }

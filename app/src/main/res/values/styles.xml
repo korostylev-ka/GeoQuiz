@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="ButtonTruFalse" parent="Widget.AppCompat.Button" >
+        <item name="color">#034830</item>
+        <item name="backgroundColor">#671205</item>
+        <item name="textFillColor">#534098</item>
+    </style>
+</resources>

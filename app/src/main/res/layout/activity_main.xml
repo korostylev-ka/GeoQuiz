@@ -19,14 +19,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/true_button"
+            style="@style/ButtonTruFalse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
             android:text="@string/true_button"/>
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/false_button"
+            style="@style/ButtonTruFalse"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="4dp"
